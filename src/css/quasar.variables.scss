@@ -7,19 +7,20 @@
 
 // Your own variables (that are declared here) and Quasar's own
 // ones will be available out of the box in your .vue/.scss/.sass files
+@use "sass:color";
 
-// It's highly recommended to change the default colors
-// to match your app's branding.
-// Tip: Use the "Theme Builder" on Quasar's documentation website.
-
-$primary: #1976d2;
-$secondary: #26a69a;
-$accent: #9c27b0;
+$primary: #492387;
+$secondary: #605470;
+$accent: #ede524;
 
 $dark: #1d1d1d;
-$dark-page: #121212;
+$dark-page: #252525;
 
 $positive: #21ba45;
-$negative: #c10015;
+$negative: #93000a;
 $info: #31ccec;
 $warning: #f2c037;
+
+// custom variables
+$primary-dark : color.adjust($primary , $lightness : -12%);
+$light-bg : #eee;

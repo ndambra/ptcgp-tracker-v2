@@ -1,14 +1,14 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="props.link">
+  <q-item clickable class="text-white" tag="a" :to="props.link">
     <q-item-section v-if="props.icon" avatar>
       <q-icon :name="props.icon" />
     </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ props.title }}</q-item-label>
-      <q-item-label caption>{{ props.caption }}</q-item-label>
     </q-item-section>
   </q-item>
+  <q-separator v-if="props.separator" dark />
 </template>
 
 <script setup>
@@ -16,11 +16,6 @@ const props = defineProps({
   title: {
     type: String,
     required: true,
-  },
-
-  caption: {
-    type: String,
-    default: '',
   },
 
   link: {
@@ -31,6 +26,11 @@ const props = defineProps({
   icon: {
     type: String,
     default: '',
+  },
+
+  separator: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>

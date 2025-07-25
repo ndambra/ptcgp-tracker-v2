@@ -1,20 +1,64 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR lFf">
+    <q-header
+      :elevated="useLightOrDark(true,false)">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title>
+          <div class="absolute-center">
+            <q-icon
+              size="sm"
+              name="catching_pokemon"
+            />
+            PTCGP Tracker
+          </div>
+        </q-toolbar-title>
+        <q-btn
+          v-if="$route.fullPath === '/deck-builder'"
+          flat
+          no-caps
+          dense
+          :label="sortLabel"
+          @click="onSortClick"
+        />
+         <q-btn
+          flat
+          no-caps
+          :label="authButtonLabel"
+          @click="onAuthClick"
+        />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer
+      v-model="leftDrawerOpen"
+      class="bg-primary"
+      :width="250"
+      :breakpoint="767"
+      show-if-above
+      bordered
+    >
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label
+          class="text-grey-4"
+          header
+        >
+          Navigation
+        </q-item-label>
 
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+        <NavLink
+          v-for="link in navLinks"
+          :key="link.title"
+          v-bind="link"
+        />
       </q-list>
     </q-drawer>
 
@@ -25,57 +69,76 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { computed, ref } from 'vue';
+import NavLink from 'src/components/nav/NavLink.vue';
+import { useDecksStore } from 'src/stores/decks-store';
+import { useAuthStore } from 'src/stores/auth-store';
+import { useLightOrDark } from 'src/use/useLightOrDark';
+import { useRouter } from 'vue-router';
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-]
+const router = useRouter();
+const decksStore = useDecksStore();
+const authStore = useAuthStore();
 
-const leftDrawerOpen = ref(false)
+/* nav drawer */
+const navLinks = [
+  {
+    title: 'Dashboard',
+    icon: 'dashboard',
+    link: '/',
+    separator: true,
+  },
+  {
+    title: 'Card Tracker',
+    icon: 'leaderboard',
+    link: '/card-tracker',
+  },
+  {
+    title: 'Card Database',
+    icon: 'storage',
+    link: '/card-database',
+  },
+  {
+    title: 'Deck Builder',
+    icon: 'construction',
+    link: '/deck-builder',
+    separator: true,
+  },
+  {
+    title: 'About',
+    icon: 'info',
+    link: '/about',
+  },
+  {
+    title: 'Settings',
+    icon: 'settings',
+    link: '/settings',
+  },
+];
+
+const leftDrawerOpen = ref(false);
 
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
+
+/* sort button*/
+const sortLabel = computed(() => (!decksStore.options.sort ? 'Sort' : 'Done'));
+
+function onSortClick() {
+  decksStore.options.sort = !decksStore.options.sort;
+}
+
+/* login/logout */
+const authButtonLabel = computed(() => {
+  const userEmail = authStore.user.email;
+  return authStore.user.id ? `Logout: ${userEmail}` : 'Login';
+})
+function onAuthClick() {
+  if (authStore.user.id) {
+    authStore.logoutUser();
+  } else {
+    router.push('/login');
+  }
 }
 </script>

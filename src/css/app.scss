@@ -1,1 +1,64 @@
-// app global css in SCSS form
+// global spacing
+.letter-spacing-none {
+  letter-spacing: 0;
+}
+
+//dark mode overrides
+.body--dark {
+  .bg-primary {
+    background-color: $primary-dark !important;
+  }
+  .q-layout__section--marginal {
+    background-color: $primary-dark;
+  }
+  .q-drawer {
+    border: none;
+  }
+}
+
+.body--light {
+  background-color: $light-bg;
+}
+
+// Drawer nav
+.q-drawer {
+  .q-item {
+    opacity: 0.6;
+    &.q-router-link--exact-active {
+      opacity: 1;
+    }
+  }
+}
+
+// q-popup-edit
+.q-popup-edit {
+  padding-bottom: 0;
+}
+
+.q-popup-edit__buttons {
+  margin: 2px;
+  .q-btn {
+    text-transform: none;
+  }
+}
+
+// Deck List Items
+.decks {
+  .q-item {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    .body--dark & {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    &:not(:first-child) {
+      margin-top: -1px;
+    }
+  }
+  .q-item__section {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .sortable-ghost {
+    opacity: 0;
+  }
+}
