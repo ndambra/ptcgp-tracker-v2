@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
     )
       .then((userCredential) => {
         // Signed up
-        console.log('registerUser', userCredential);
+        setupUser(userCredential);
       })
       .catch((error) => {
         console.log('registerUser::error:', error.message);
@@ -52,26 +52,18 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logoutUser() {
-    signOut(auth)
-      .then(() => {
-        console.log('logoutUser');
-      })
-      .catch((error) => {
-        console.log('logoutUser::error:', error.message);
-      });
+    signOut(auth);
   }
 
   function loginUser(credentials) {
-    signInWithEmailAndPassword(auth, credentials.email, credentials.password)
-      .then((userCredential) => {
-        console.log('loginUser', userCredential.user);
-      })
-      .catch((error) => {
-        console.log('loginUser::error:', error.message);
-      });
+    signInWithEmailAndPassword(auth, credentials.email, credentials.password);
   }
 
   // helper functions
+  function setupUser(userCredential) {
+    console.log(userCredential);
+    // add all cards with 0 quantity
+  }
 
   return {
     // state
