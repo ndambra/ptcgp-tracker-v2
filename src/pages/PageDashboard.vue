@@ -1,20 +1,14 @@
 <template>
   <q-page class="q-ma-lg">
-    <div v-if="!cardsStore.cardsLoaded" class="q-mx-md">
-      <q-linear-progress  class="q-my-md" indeterminate rounded size="xl"/>
-      <div class="text-h6 text-center">Hang tight! Fetching data...</div>
-    </div>
-    <div v-else >
-      <cards-summary />
-      <q-separator spaced />
-    </div>
+    <user-dashboard v-if="authStore.user.id" />
+    <div v-else>Not logged in</div>
   </q-page>
 </template>
 
 <script setup>
 /* imports */
-import CardsSummary from 'src/components/cards/summary/CardsSummary.vue';
-import { useCardsStore } from 'src/stores/cards-store';
+import { useAuthStore } from 'src/stores/auth-store';
+import UserDashboard from 'src/components/nav/UserDashboard.vue';
 
-const cardsStore = useCardsStore();
+const authStore = useAuthStore();
 </script>

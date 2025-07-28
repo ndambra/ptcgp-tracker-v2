@@ -26,14 +26,13 @@ export const useAuthStore = defineStore('auth', () => {
       if (user) {
         this.user.id = user.uid;
         this.user.email = user.email;
-        this.router.push('/');
         cardsStore.init();
       } else {
         this.user.id = null;
         this.user.email = '';
-        this.router.replace('/login');
         cardsStore.clearUsersCards();
       }
+      this.router.push('/');
     });
   }
   function registerUser(credentials) {
@@ -61,8 +60,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   // helper functions
   function setupUser(userCredential) {
-    console.log(userCredential);
-    // add all cards with 0 quantity
+     const cardsStore = useCardsStore();
+     if (userCredential && userCredential.user) {
+      cardsStore.setupNewUser();
+     }
   }
 
   return {

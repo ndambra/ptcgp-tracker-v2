@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, setDoc, doc } from 'firebase/firestore';
 import { db } from 'src/js/firebase';
 import { useAuthStore } from './auth-store';
 
@@ -63,7 +63,18 @@ export const useCardsStore = defineStore('cards', () => {
         usersCards.value = cardsDb;
         cardsLoaded.value = true;
       },
+      (error) => {
+        console.log("Error fetching user's cards: ", error.message);
+      },
     );
+  }
+
+  async function setupNewUser() {
+    // TODO: modify to set up all expansions with all cards at quantity 0
+    const newUserRef = doc(usersCardsCollectionRef, 'a1');
+    await setDoc(newUserRef, {
+      cards: [{ cardId: 1, quantity: 4 }],
+    });
   }
 
   function clearUsersCards() {
@@ -139,6 +150,7 @@ export const useCardsStore = defineStore('cards', () => {
     //actions
     init,
     fetchAllCards,
+    setupNewUser,
     clearUsersCards,
     getCardsByExpansion,
     getTotalCardsCountForExpansion,

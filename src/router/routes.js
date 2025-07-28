@@ -13,32 +13,38 @@ const routes = [
     path: '/',
     component: MainLayout,
     children: [
-      { path: '', component: PageDashboard },
+      { path: '', name:'index', component: PageDashboard },
       {
         path: 'card-tracker',
+        name:'card-tracker',
         component: PageCardTracker,
       },
       {
         path: 'card-database',
+        name:'card-database',
         component: PageCardDatabase,
       },
       {
         path: 'deck-builder',
+        name:'deck-builder',
         component: PageDeckBuilder,
       },
-      { path: 'about', component: PageAbout },
+      { path: 'about', name:'about', component: PageAbout },
       {
         path: 'settings',
+        name:'settings',
         component: PageSettings,
       },
       {
         path: 'login',
+        name:'login',
         component: PageAuth,
       },
     ],
   },
   {
     path: '/:catchAll(.*)*',
+    name:'error',
     component: ErrorNotFound,
   },
 ];

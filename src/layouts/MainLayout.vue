@@ -86,12 +86,14 @@ const navLinks = [
     title: 'Dashboard',
     icon: 'dashboard',
     link: '/',
+    auth: true,
     separator: true,
   },
   {
     title: 'Card Tracker',
     icon: 'leaderboard',
     link: '/card-tracker',
+    auth: true,
   },
   {
     title: 'Card Database',
@@ -113,6 +115,7 @@ const navLinks = [
     title: 'Settings',
     icon: 'settings',
     link: '/settings',
+    auth: true,
   },
 ];
 

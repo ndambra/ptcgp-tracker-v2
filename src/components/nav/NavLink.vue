@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable class="text-white" tag="a" :to="props.link">
+  <q-item v-if="canSee" clickable class="text-white" tag="a" :to="props.link">
     <q-item-section v-if="props.icon" avatar>
       <q-icon :name="props.icon" />
     </q-item-section>
@@ -12,6 +12,14 @@
 </template>
 
 <script setup>
+/* imports */
+import { useAuthStore } from 'src/stores/auth-store';
+import { computed } from 'vue';
+
+const authStore = useAuthStore();
+
+const canSee = computed(() => (authStore.user.id && props.auth) || !props.auth)
+
 const props = defineProps({
   title: {
     type: String,
@@ -32,5 +40,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+
+  auth: {
+    type: Boolean,
+    default: false
+  }
 })
 </script>
