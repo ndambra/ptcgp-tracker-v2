@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { collection, onSnapshot, setDoc, doc } from 'firebase/firestore';
+import {
+  collection,
+  onSnapshot,
+  setDoc,
+  doc,
+  writeBatch,
+} from 'firebase/firestore';
 import { db } from 'src/js/firebase';
 import { useAuthStore } from './auth-store';
 
@@ -8,14 +14,18 @@ let usersCardsCollectionRef = null;
 let getUsersCardsSnaphshot = null;
 
 export const useCardsStore = defineStore('cards', () => {
-  /* state */
+  /*
+    state
+  */
   const cards = ref([]);
   const usersCards = ref([]);
   const cardsLoaded = ref(false);
 
-  /* getters */
+  /*
+    actions
+  */
 
-  /* actions */
+  /* Initialize  */
   function init() {
     const authStore = useAuthStore();
     usersCardsCollectionRef = collection(
@@ -69,16 +79,43 @@ export const useCardsStore = defineStore('cards', () => {
     );
   }
 
+  async function saveUserCardUpdates() {
+    const batch = writeBatch(db);
+
+    usersCards.value.forEach(exp => {
+      const expRef = doc(usersCardsCollectionRef, exp.id);
+      batch.set(expRef, {cards: exp.cards});
+    })
+    await batch.commit()
+    usersCards;
+  }
+
+  function updateCardCount(expansion, cardInfo) {
+    const currExp = usersCards.value.find((exp) => exp.id === expansion);
+    if (currExp) {
+      let foundCard = currExp.cards.find(
+        (card) => card.cardId === cardInfo.cardId,
+      );
+      if (foundCard) foundCard.quantity = cardInfo.quantity;
+      else currExp.cards.push(cardInfo);
+    }
+  }
+
   async function setupNewUser() {
     // TODO: modify to set up all expansions with all cards at quantity 0
     const newUserRef = doc(usersCardsCollectionRef, 'a1');
     await setDoc(newUserRef, {
-      cards: [{ cardId: 1, quantity: 4 }],
+      cards: [{ cardId: 1, quantity: 0 }],
     });
   }
 
   function clearUsersCards() {
     usersCards.value = [];
+  }
+
+  function getUserCardsByExpansion(exp) {
+    const expCards = getUserCardsForExpansion(exp);
+    return expCards;
   }
 
   function getCardsByExpansion(exp) {
@@ -123,13 +160,28 @@ export const useCardsStore = defineStore('cards', () => {
       .length;
   }
 
-  // helper functions
+  /*
+    helper functions
+  */
+
+  /* Get all cards from 'cards' db for 'All' expansions or specific expansion */
   function getAllCardsForExpansion(expansion) {
     let currExp = cards.value.find((exp) => exp.id === expansion);
     if (currExp) return currExp.cards;
     else return [];
   }
 
+  /* Get all cards from 'users' db for 'All' expansions or specific expansion */
+  function getUserCardsForExpansion(expansion) {
+    let currExp = [];
+    if (expansion === 'all') currExp = usersCards.value;
+    else currExp.push(usersCards.value.find((exp) => exp.id === expansion));
+
+    return currExp;
+  }
+
+  /* Update cards to include a starting quantity of 0.
+     Note: function will need to be renamed. */
   function updateIds(expansionSet) {
     let allCards = [];
     expansionSet.forEach((card) => {
@@ -150,7 +202,10 @@ export const useCardsStore = defineStore('cards', () => {
     //actions
     init,
     fetchAllCards,
+    saveUserCardUpdates,
     setupNewUser,
+    updateCardCount,
+    getUserCardsByExpansion,
     clearUsersCards,
     getCardsByExpansion,
     getTotalCardsCountForExpansion,

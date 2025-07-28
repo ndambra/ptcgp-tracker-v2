@@ -3,7 +3,7 @@
     <div class="panel-container">
       <q-tabs
         v-model="tab"
-        :class="[useLightOrDark('bg-grey-3', 'bg-grey-8'),  useLightOrDark('text-grey-8', 'text-grey-3')]"
+        :class="[useLightOrDark('bg-grey-5', 'bg-grey-8'),  useLightOrDark('text-grey-9', 'text-grey-3')]"
         active-color="primary"
         no-caps
         dense
@@ -32,7 +32,7 @@ import { useLightOrDark } from 'src/use/useLightOrDark';
 /* imports */
 
 /* Tabs */
-const tab = ref('all');
+const tab = ref('a1');
 const tabs = ref([]);
 
 /* onMounted */

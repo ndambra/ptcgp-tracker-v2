@@ -49,10 +49,12 @@
           color="primary"
           icon="more_horiz"
         >
-          <q-menu auto-close>
+          <q-menu
+            v-if="!props.row.quantity || props.row.quantity <= 0"
+            auto-close
+          >
             <q-list dense>
               <q-item
-                v-if="!props.row.quantity || props.row.quantity <= 0"
                 clickable
                 @click="updateCardCount(props.row, 1)"
               >
@@ -67,24 +69,13 @@
                   <q-item-label>Own</q-item-label>
                 </q-item-section>
               </q-item>
+            </q-list>
+          </q-menu>
+          <q-menu v-else anchor="top left" self="bottom left">
+            <q-list dense>
+              <!-- Look at q-slider: could be a fun way to allow adding more than 1 at a time -->
               <q-item
-                v-else
-                clickable
-                @click="updateCardCount(props.row, 0)"
-              >
-                <q-item-section side>
-                  <q-icon
-                    size="xs"
-                    color="red"
-                    name="cancel"
-                  />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Don't own</q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-separator />
-              <q-item
+                v-if="props.row.quantity && props.row.quantity > 0"
                 clickable
                 @click="increaseCardCount(props.row)"
               >
@@ -100,6 +91,7 @@
                 </q-item-section>
               </q-item>
               <q-item
+                v-if="props.row.quantity && props.row.quantity > 0"
                 clickable
                 @click="decreaseCardCount(props.row)"
               >
@@ -135,20 +127,16 @@ const props = defineProps(['tab']);
 /* Table Rows (each row is a card) */
 const tableRows = computed(() => {
   let cardData = cardsStore.getCardsByExpansion(props.tab);
+  const usersCards = cardsStore.getUserCardsByExpansion(props.tab);
 
-  // TODO: get the user's card count
-  // const usersCards = cardsStore.usersCards;
-  // console.log("usersCards: ", usersCards);
-
-  // usersCards.forEach(exp => {
-  //   exp.cards.forEach( usrCrd => {
-  //     let index = cardData.findIndex(
-  //       card => (card.expansion === exp.id && card.id === usrCrd.cardId)
-  //     );
-  //     if (usrCrd.quantity) cardData[index].quantity = usrCrd.quantity;
-  //     else cardData[index].quantity =  0;
-  //   } )
-  // })
+  usersCards.forEach((exp) => {
+    exp.cards.forEach((card) => {
+      let index = cardData.findIndex(
+        (cd) => cd.id === card.cardId && cd.expansion === exp.id,
+      );
+      if (card.quantity) cardData[index].quantity = card.quantity;
+    });
+  });
   return cardData;
 });
 
@@ -173,5 +161,9 @@ function decreaseCardCount(row) {
 
 function updateCardCount(cardInfo, quantity) {
   cardInfo.quantity = quantity;
+  cardsStore.updateCardCount(cardInfo.expansion, {
+    cardId: cardInfo.id,
+    quantity,
+  });
 }
 </script>
