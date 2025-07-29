@@ -17,19 +17,27 @@
           :name="tab.name"
           class="q-pa-none"
         >
-          <cards-table :tab="tab.name" />
+          <cards-table v-if="!isDatabase" :tab="tab.name" />
+          <cards-database-table v-else  :tab="tab.name"/>
         </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
 </template>
 <script setup>
+/* imports */
 import { ref, onMounted } from 'vue';
 import { expansions } from 'src/js/constant';
 import CardsTable from './CardsTable.vue';
 import { useLightOrDark } from 'src/use/useLightOrDark';
+import CardsDatabaseTable from './CardsDatabaseTable.vue';
 
-/* imports */
+defineProps({
+  isDatabase: {
+    type: Boolean,
+    default: false
+  }
+})
 
 /* Tabs */
 const tab = ref('a1');

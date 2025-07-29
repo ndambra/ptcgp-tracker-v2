@@ -29,6 +29,7 @@ export const useDecksStore = defineStore('decks', () => {
     Notify.create({
       message: 'Deck deleted',
       position: 'top',
+      color: 'negative'
     });
   }
 

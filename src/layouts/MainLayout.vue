@@ -26,6 +26,7 @@
           flat
           no-caps
           dense
+          color="accent"
           :label="sortLabel"
           @click="onSortClick"
         />

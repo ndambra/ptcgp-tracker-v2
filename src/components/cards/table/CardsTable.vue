@@ -125,20 +125,7 @@ const cardsStore = useCardsStore();
 const props = defineProps(['tab']);
 
 /* Table Rows (each row is a card) */
-const tableRows = computed(() => {
-  let cardData = cardsStore.getCardsByExpansion(props.tab);
-  const usersCards = cardsStore.getUserCardsByExpansion(props.tab);
-
-  usersCards.forEach((exp) => {
-    exp.cards.forEach((card) => {
-      let index = cardData.findIndex(
-        (cd) => cd.id === card.cardId && cd.expansion === exp.id,
-      );
-      if (card.quantity) cardData[index].quantity = card.quantity;
-    });
-  });
-  return cardData;
-});
+const tableRows = computed(() => cardsStore.getCardsByExpansion(props.tab));
 
 /* table */
 const pagination = ref({

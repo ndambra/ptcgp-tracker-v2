@@ -9,7 +9,7 @@
       <q-icon
         class="handle"
         name="drag_handle"
-        color="primary"
+        :color="useLightOrDark('primary', 'accent')"
       />
     </q-item-section>
     <q-item-section
@@ -130,9 +130,6 @@ function promptToDelete() {
     })
       .onOk(() => {
         decksStore.deleteDeck(props.deck.id);
-      })
-      .onCancel(() => {
-        console.log('>>>> Cancel');
       });
 }
 

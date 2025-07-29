@@ -21,12 +21,12 @@ export const useAuthStore = defineStore('auth', () => {
   /* actions */
   function init() {
     const cardsStore = useCardsStore();
+    cardsStore.fetchAllCards();
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         this.user.id = user.uid;
         this.user.email = user.email;
-        cardsStore.init();
       } else {
         this.user.id = null;
         this.user.email = '';
@@ -35,6 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
       this.router.push('/');
     });
   }
+
   function registerUser(credentials) {
     createUserWithEmailAndPassword(
       auth,
