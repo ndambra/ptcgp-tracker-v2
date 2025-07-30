@@ -25,7 +25,7 @@ export const useCardsStore = defineStore('cards', () => {
     actions
   */
 
- /* Fetch all cards from all expansions in the 'cards' collection. */
+  /* Fetch all cards from all expansions in the 'cards' collection. */
   async function fetchAllCards() {
     cardsLoaded.value = false;
     onSnapshot(collection(db, 'cards'), (querySnapshot) => {
@@ -139,7 +139,7 @@ export const useCardsStore = defineStore('cards', () => {
     helper functions
   */
 
-   /* Fetch the user's card quantity data for all expasions from the 'users.cards' collection. */
+  /* Fetch the user's card quantity data for all expasions from the 'users.cards' collection. */
   async function fetchAllUsersCards() {
     const authStore = useAuthStore();
 
@@ -222,5 +222,6 @@ export const useCardsStore = defineStore('cards', () => {
     getTotalCardsCountForExpansion,
     getOwnCardsCountForExpansion,
     getMissingCardsCountPerPack,
+    fetchAllUsersCards,
   };
 });

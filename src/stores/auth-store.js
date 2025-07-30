@@ -13,17 +13,19 @@ export const useAuthStore = defineStore('auth', () => {
   /* state */
   const user = reactive({
     id: null,
-    email: ''
-  })
+    email: '',
+  });
 
   /* getters */
 
   /* actions */
   function init() {
+    console.log('init');
     const cardsStore = useCardsStore();
     cardsStore.fetchAllCards();
 
     onAuthStateChanged(auth, (user) => {
+      console.log('onAuthStateChanged', user);
       if (user) {
         this.user.id = user.uid;
         this.user.email = user.email;
@@ -56,15 +58,22 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function loginUser(credentials) {
-    signInWithEmailAndPassword(auth, credentials.email, credentials.password);
+    signInWithEmailAndPassword(auth, credentials.email, credentials.password)
+      .then(() => {
+        const cardsStore = useCardsStore();
+        cardsStore.fetchAllUsersCards();
+      })
+      .catch((error) => {
+        console.log('login error', error.message);
+      });
   }
 
   // helper functions
   function setupUser(userCredential) {
-     const cardsStore = useCardsStore();
-     if (userCredential && userCredential.user) {
+    const cardsStore = useCardsStore();
+    if (userCredential && userCredential.user) {
       cardsStore.setupNewUser();
-     }
+    }
   }
 
   return {
