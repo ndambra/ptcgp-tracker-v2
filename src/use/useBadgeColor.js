@@ -40,6 +40,12 @@ export function useBadgeColor(packName) {
     case 'Eevee Grove':
       color = 'brown';
       break;
+    case 'Ho-Oh':
+      color = 'orange-10';
+      break;
+    case 'Lugia':
+      color = 'blue-10';
+      break;
     default:
       color = 'white';
   }
