@@ -43,6 +43,49 @@ export const useCardsStore = defineStore('cards', () => {
     });
   }
 
+  /* Fetch the user's card quantity data for all expasions from the 'users.cards' collection. */
+  async function fetchAllUsersCards() {
+    const authStore = useAuthStore();
+
+    // If not logged in; done loading
+    if (!authStore.user.id) {
+      cardsLoaded.value = true;
+      return;
+    }
+
+    // get users cards
+    usersCardsCollectionRef = collection(
+      db,
+      'users',
+      authStore.user.id,
+      'cards',
+    );
+
+    // unsubscribe from any active listener
+    if (getUsersCardsSnaphshot) getUsersCardsSnaphshot();
+
+    getUsersCardsSnaphshot = onSnapshot(
+      usersCardsCollectionRef,
+      (querySnapshot) => {
+        let cardsDb = [];
+        querySnapshot.forEach((doc) => {
+          let expansionSet = {
+            id: doc.id,
+            cards: doc.data().cards,
+          };
+          cardsDb.push(expansionSet);
+        });
+        usersCards.value = cardsDb;
+        cardsLoaded.value = true;
+      },
+      (error) => {
+        if (authStore.user.id) {
+          console.log("Error fetching user's cards: ", error.message);
+        }
+      },
+    );
+  }
+
   /* Initialize the user's quantity per card in the allCards array. */
   function initUserCardCount() {
     let allCards = getCardsByExpansion('all');
@@ -77,6 +120,9 @@ export const useCardsStore = defineStore('cards', () => {
       );
       if (foundCard) foundCard.quantity = cardInfo.quantity;
       else currExp.cards.push(cardInfo);
+    } else {
+      const newExpCards = [cardInfo];
+      usersCards.value.push({ id: expansion, cards: newExpCards });
     }
   }
 
@@ -139,47 +185,6 @@ export const useCardsStore = defineStore('cards', () => {
     helper functions
   */
 
-  /* Fetch the user's card quantity data for all expasions from the 'users.cards' collection. */
-  async function fetchAllUsersCards() {
-    const authStore = useAuthStore();
-
-    // If not logged in; done loading
-    if (!authStore.user.id) {
-      cardsLoaded.value = true;
-      return;
-    }
-
-    // get users cards
-    usersCardsCollectionRef = collection(
-      db,
-      'users',
-      authStore.user.id,
-      'cards',
-    );
-
-    // unsubscribe from any active listener
-    if (getUsersCardsSnaphshot) getUsersCardsSnaphshot();
-
-    getUsersCardsSnaphshot = onSnapshot(
-      usersCardsCollectionRef,
-      (querySnapshot) => {
-        let cardsDb = [];
-        querySnapshot.forEach((doc) => {
-          let expansionSet = {
-            id: doc.id,
-            cards: doc.data().cards,
-          };
-          cardsDb.push(expansionSet);
-        });
-        usersCards.value = cardsDb;
-        cardsLoaded.value = true;
-      },
-      (error) => {
-        console.log("Error fetching user's cards: ", error.message);
-      },
-    );
-  }
-
   /* Get all cards from 'cards' db for 'All' expansions or specific expansion */
   function getAllCardsForExpansion(expansion) {
     let currExp = cards.value.find((exp) => exp.id === expansion);
@@ -206,6 +211,15 @@ export const useCardsStore = defineStore('cards', () => {
     return allExpansionCards.filter((card) => card.pack.includes(packName));
   }
 
+  async function addCards(addCards, expId) {
+    if (addCards) {
+      let newObj = {
+        cards: addCards,
+      };
+      await setDoc(doc(db, 'cards', expId), newObj);
+    }
+  }
+
   return {
     // state
     cards,
@@ -223,5 +237,6 @@ export const useCardsStore = defineStore('cards', () => {
     getOwnCardsCountForExpansion,
     getMissingCardsCountPerPack,
     fetchAllUsersCards,
+    addCards,
   };
 });

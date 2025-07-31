@@ -20,12 +20,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   /* actions */
   function init() {
-    console.log('init');
     const cardsStore = useCardsStore();
     cardsStore.fetchAllCards();
 
     onAuthStateChanged(auth, (user) => {
-      console.log('onAuthStateChanged', user);
       if (user) {
         this.user.id = user.uid;
         this.user.email = user.email;

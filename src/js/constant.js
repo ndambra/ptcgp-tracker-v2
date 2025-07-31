@@ -11,7 +11,7 @@ export const expansions = [
   { code: 'a3', name: 'Celestial Guardians', packs: ['Solgaleo', 'Lunala'] },
   { code: 'a3a', name: 'Extradimensional Crisis', packs: ['XD Crisis'] },
   { code: 'a3b', name: 'Eevee Grove', packs: ['Eevee Grove'] },
-  { code: 'a34', name: 'Wisdom of Sky and Sea', packs: ['Ho-Oh', 'Lugia'] },
+  { code: 'a4', name: 'Wisdom of Sky and Sea', packs: ['Ho-Oh', 'Lugia'] },
   { code: 'promo', name: 'Promo', packs: ['Promo-A'] },
 ];
 
