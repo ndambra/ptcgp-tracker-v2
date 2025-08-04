@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR lFf">
+  <q-layout view="lhh LpR lff">
     <q-header
       :elevated="useLightOrDark(true,false)">
       <q-toolbar>
@@ -43,9 +43,9 @@
       v-model="leftDrawerOpen"
       class="bg-primary"
       :width="250"
-      :breakpoint="767"
-      show-if-above
-      bordered
+      behavior="mobile"
+      overlay
+      elevated
     >
       <q-list>
         <q-item-label

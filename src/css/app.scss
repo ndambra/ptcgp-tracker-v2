@@ -54,9 +54,11 @@
     }
   }
   .q-item__section {
-    flex-direction: row;
-    justify-content: flex-start;
     align-items: center;
+    &:not(:last-child) {
+      flex-direction: row;
+      justify-content: flex-start;
+    }
   }
   .sortable-ghost {
     opacity: 0;

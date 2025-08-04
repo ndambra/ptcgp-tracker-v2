@@ -9,6 +9,7 @@ import {
 } from 'firebase/firestore';
 import { db } from 'src/js/firebase';
 import { useAuthStore } from './auth-store';
+import { Notify } from 'quasar';
 
 let usersCardsCollectionRef = null;
 let getUsersCardsSnaphshot = null;
@@ -101,6 +102,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   /* Write the user's card quantity updates for all expansions to the 'users.cards' collection. */
   async function saveUserCardUpdates() {
+    cardsLoaded.value = true;
     const batch = writeBatch(db);
 
     usersCards.value.forEach((exp) => {
@@ -108,7 +110,12 @@ export const useCardsStore = defineStore('cards', () => {
       batch.set(expRef, { cards: exp.cards });
     });
     await batch.commit();
-    usersCards;
+    cardsLoaded.value = false;
+    Notify.create({
+          message: 'Cards saved.',
+          position: 'top',
+          color: 'positive'
+        });
   }
 
   /* Update card count information from passed in cardInfo. */

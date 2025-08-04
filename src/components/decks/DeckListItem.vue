@@ -1,7 +1,8 @@
 <template>
   <q-item
     class="decks"
-    :class="useLightOrDark('bg-white', 'bg-black')">
+    :class="useLightOrDark('bg-white', 'bg-black')"
+  >
     <q-item-section
       v-if="decksStore.options.sort"
       avatar
@@ -14,7 +15,8 @@
     </q-item-section>
     <q-item-section
       class="text-weight-bold"
-      :class="useLightOrDark('text-grey-9', 'text-grey-5')">
+      :class="useLightOrDark('text-grey-9', 'text-grey-5')"
+    >
       <div class="q-mr-xs cursor-pointer">
         {{ deck.name }}
         <q-popup-edit
@@ -103,34 +105,33 @@ const props = defineProps({
 });
 
 function onDelete() {
-  if (settingsStore.settings.promptDelete)promptToDelete()
+  if (settingsStore.settings.promptDelete) promptToDelete();
   else decksStore.deleteDeck(props.deck.id);
 }
 
 function promptToDelete() {
   $q.dialog({
-      title: 'Delete Deck',
-      message: `
+    title: 'Delete Deck',
+    message: `
         Would you like to delete this deck?
         <div class="q-mt-md text-weight-bold">
           <span class="text-${useTypeColor(props.deck.energy[0])}">${props.deck.name}</span>: ${props.deck.energy}
         </div>
       `,
-      persistent: true,
-      html: true,
-      ok: {
-        label: 'Delete',
-        color: 'negative',
-        noCaps: true,
-      },
-      cancel: {
-        outline: true,
-        noCaps: true,
-      },
-    })
-      .onOk(() => {
-        decksStore.deleteDeck(props.deck.id);
-      });
+    persistent: true,
+    html: true,
+    ok: {
+      label: 'Delete',
+      color: 'negative',
+      noCaps: true,
+    },
+    cancel: {
+      outline: true,
+      noCaps: true,
+    },
+  }).onOk(() => {
+    decksStore.deleteDeck(props.deck.id);
+  });
 }
 
 function onNameUpdate(value) {
