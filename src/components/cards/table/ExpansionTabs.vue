@@ -31,6 +31,9 @@ import { expansions } from 'src/js/constant';
 import CardsTable from './CardsTable.vue';
 import { useLightOrDark } from 'src/use/useLightOrDark';
 import CardsDatabaseTable from './CardsDatabaseTable.vue';
+import { useSettingsStore } from 'src/stores/settings-store';
+
+const settingsStore = useSettingsStore();
 
 defineProps({
   isDatabase: {
@@ -40,7 +43,7 @@ defineProps({
 })
 
 /* Tabs */
-const tab = ref('a1');
+const tab = ref(settingsStore.settings.cardTableTab);
 const tabs = ref([]);
 
 /* onMounted */

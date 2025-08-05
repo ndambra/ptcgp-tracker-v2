@@ -13,13 +13,15 @@
         />
 
         <q-toolbar-title>
-          <div class="absolute-center">
-            <q-icon
-              size="sm"
-              name="catching_pokemon"
-            />
-            PTCGP Tracker
-          </div>
+          <q-btn
+            flat
+            class="absolute-center"
+            size="21px"
+            label="PTCGP Tracker"
+            icon="catching_pokemon"
+            no-caps
+            to="/"
+          />
         </q-toolbar-title>
         <q-btn
           v-if="$route.fullPath === '/deck-builder'"

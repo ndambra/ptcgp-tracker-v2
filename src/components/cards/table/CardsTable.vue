@@ -3,19 +3,54 @@
     :pagination="pagination"
     :columns="columns"
     :rows="tableRows"
+    table-header-class="bg-primary text-grey-3"
     row-key="id"
+    :loading="!cardsStore.cardsLoaded"
+    :filter="filter"
   >
+    <template v-slot:top>
+      <q-card flat class="q-pa-none">
+        <q-card-section>
+          <div>Card Count: {{ getOwnCardsCount }}/{{ getTotalCardsCount }}</div>
+        </q-card-section>
+      </q-card>
+      <q-card flat>
+        <q-card-section class="flex justify-evenly">
+          <div
+            v-for="pack in expPacks"
+            :key="pack"
+            class="q-mr-xs flex column"
+          >
+            <pack-badge :pack="pack" />
+            <div class="text-center">
+              {{ getMissingCardsCount(pack) }}
+            </div>
+          </div>
+        </q-card-section>
+      </q-card>
+
+      <q-space />
+      <q-input
+        dense
+        debounce="300"
+        v-model="filter"
+        placeholder="Search"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </template>
     <template v-slot:body-cell-pack="props">
       <q-td
         key="pack"
         :props="props"
       >
-        <q-badge
+        <pack-badge
           v-for="pck in props.value"
           :key="pck"
-          :color="useBadgeColor(pck)"
-          :label="pck"
-          class="q-mx-xs"
+          :pack="pck"
+          class="q-mr-xs"
         />
       </q-td>
     </template>
@@ -71,7 +106,7 @@
               </q-item>
             </q-list>
           </q-menu>
-          <q-menu v-else anchor="top left" self="bottom left">
+          <q-menu v-else>
             <q-list dense>
               <!-- Look at q-slider: could be a fun way to allow adding more than 1 at a time -->
               <q-item
@@ -118,14 +153,27 @@
 /* imports */
 import { computed, ref } from 'vue';
 import { columns } from 'src/js/table-constants';
+import { expansions } from 'src/js/constant';
 import { useCardsStore } from 'src/stores/cards-store';
-import { useBadgeColor } from 'src/use/useBadgeColor';
+import PackBadge from 'src/components/ui/PackBadge.vue';
 
 const cardsStore = useCardsStore();
 const props = defineProps(['tab']);
 
 /* Table Rows (each row is a card) */
 const tableRows = computed(() => cardsStore.getCardsByExpansion(props.tab));
+
+const getOwnCardsCount = computed(() => {
+  return cardsStore.getOwnCardsCountForExpansion(props.tab);
+});
+
+const getTotalCardsCount = computed(() => {
+  return cardsStore.getTotalCardsCountForExpansion(props.tab);
+});
+
+function getMissingCardsCount(packName) {
+  return cardsStore.getMissingCardsCountPerPack(props.tab, packName);
+}
 
 /* table */
 const pagination = ref({
@@ -134,6 +182,14 @@ const pagination = ref({
   page: 1,
   rowsPerPage: 20,
 });
+
+const filter = ref('');
+const expPacks = computed(() =>{
+  if (props.tab === 'all') return []
+  else return expansions.find((exp) => exp.code === props.tab).packs
+
+}
+);
 
 /* table actions */
 function increaseCardCount(row) {
@@ -154,3 +210,8 @@ function updateCardCount(cardInfo, quantity) {
   });
 }
 </script>
+<style scoped>
+.custom-header {
+  background-color: red;
+}
+</style>

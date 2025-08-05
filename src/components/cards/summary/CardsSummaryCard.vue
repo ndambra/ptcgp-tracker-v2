@@ -3,6 +3,8 @@
     bordered
     class="col-auto q-ma-sm"
     style="min-width: 120px"
+    clickable
+    @click="onCardClick"
   >
     <q-card-section>
       <div class="text-h6 text-center">{{ exp.name }}</div>
@@ -19,11 +21,7 @@
         :key="pack"
         class="q-mx-xs flex column"
       >
-        <q-badge
-          rounded
-          :color="useBadgeColor(pack)"
-          :label="pack"
-        />
+        <pack-badge :pack="pack"/>
         <div class="text-center">
           {{ getMissingCardsCount(pack) }}
         </div>
@@ -32,11 +30,16 @@
   </q-card>
 </template>
 <script setup>
-import { useBadgeColor } from 'src/use/useBadgeColor';
 import { useCardsStore } from 'src/stores/cards-store';
+import { useSettingsStore } from 'src/stores/settings-store';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import PackBadge from 'src/components/ui/PackBadge.vue';
 
+const router = useRouter();
 const cardsStore = useCardsStore();
+const settingsStore = useSettingsStore();
+
 const props = defineProps(['exp']);
 
 const getOwnCardsCount = computed(() => {
@@ -51,4 +54,18 @@ const getTotalCardsCount = computed(() =>  {
 function getMissingCardsCount(packName) {
   return cardsStore.getMissingCardsCountPerPack(props.exp.code, packName);
 }
+
+function onCardClick() {
+  settingsStore.settings.cardTableTab = props.exp.code;
+  router.push('/card-tracker');
+}
 </script>
+<style scoped>
+.q-card {
+  cursor: pointer;
+}
+.q-card:hover {
+  background-color: #eee;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+</style>

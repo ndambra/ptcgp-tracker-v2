@@ -1,10 +1,25 @@
 <template>
   <q-table
+    bordered
     :pagination="pagination"
     :columns="databaseColumns"
     :rows="tableRows"
     row-key="id"
+    :filter="filter"
   >
+    <template v-slot:top-right>
+      <q-input
+        dense
+        outlined
+        debounce="300"
+        v-model="filter"
+        placeholder="Search"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </template>
     <template v-slot:body-cell-pack="props">
       <q-td
         key="pack"
@@ -33,7 +48,9 @@ const cardsStore = useCardsStore();
 const props = defineProps(['tab']);
 
 const invalidCol = ['own', 'quantity', 'actions'];
-const databaseColumns = columns.filter(column => !invalidCol.includes(column.name));
+const databaseColumns = columns.filter(
+  (column) => !invalidCol.includes(column.name),
+);
 
 /* Table Rows (each row is a card) */
 const tableRows = computed(() => cardsStore.getCardsByExpansion(props.tab));
@@ -45,4 +62,6 @@ const pagination = ref({
   page: 1,
   rowsPerPage: 20,
 });
+
+const filter = ref('');
 </script>

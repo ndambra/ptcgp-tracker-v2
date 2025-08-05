@@ -7,6 +7,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const settings = reactive({
     promptDelete: false,
     darkMode: false, // false | true | 'auto'
+    cardTableTab: 'all'
   });
 
   watch(

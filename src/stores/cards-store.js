@@ -102,7 +102,7 @@ export const useCardsStore = defineStore('cards', () => {
 
   /* Write the user's card quantity updates for all expansions to the 'users.cards' collection. */
   async function saveUserCardUpdates() {
-    cardsLoaded.value = true;
+    cardsLoaded.value = false;
     const batch = writeBatch(db);
 
     usersCards.value.forEach((exp) => {
@@ -116,6 +116,7 @@ export const useCardsStore = defineStore('cards', () => {
           position: 'top',
           color: 'positive'
         });
+    cardsLoaded.value = true;
   }
 
   /* Update card count information from passed in cardInfo. */
