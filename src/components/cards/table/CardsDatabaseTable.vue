@@ -3,14 +3,15 @@
     bordered
     :pagination="pagination"
     :columns="databaseColumns"
+    table-header-class="bg-primary text-grey-3"
     :rows="tableRows"
     row-key="id"
     :filter="filter"
   >
     <template v-slot:top-right>
       <q-input
+      class="q-ma-sm"
         dense
-        outlined
         debounce="300"
         v-model="filter"
         placeholder="Search"
@@ -25,12 +26,10 @@
         key="pack"
         :props="props"
       >
-        <q-badge
+        <pack-badge
           v-for="pck in props.value"
           :key="pck"
-          :color="useBadgeColor(pck)"
-          :label="pck"
-          class="q-mx-xs"
+          :pack="pck"
         />
       </q-td>
     </template>
@@ -42,7 +41,7 @@
 import { computed, ref } from 'vue';
 import { columns } from 'src/js/table-constants';
 import { useCardsStore } from 'src/stores/cards-store';
-import { useBadgeColor } from 'src/use/useBadgeColor';
+import PackBadge from 'src/components/ui/PackBadge.vue';
 
 const cardsStore = useCardsStore();
 const props = defineProps(['tab']);

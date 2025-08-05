@@ -9,11 +9,19 @@
     :filter="filter"
   >
     <template v-slot:top>
-      <q-card flat class="q-pa-none">
+      <q-card
+        flat
+        class="q-pa-none"
+      >
         <q-card-section>
-          <div>Card Count: {{ getOwnCardsCount }}/{{ getTotalCardsCount }}</div>
+          <div class="text-weight-bold">Card Count:</div>
+          <div>{{ getOwnCardsCount }}/{{ getTotalCardsCount }}</div>
         </q-card-section>
       </q-card>
+      <q-separator
+        vertical
+        inset
+      />
       <q-card flat>
         <q-card-section class="flex justify-evenly">
           <div
@@ -28,13 +36,28 @@
           </div>
         </q-card-section>
       </q-card>
-
+      <q-separator
+        vertical
+        inset
+      />
       <q-space />
+      <q-btn
+        class="q-mx-md"
+        label="Save"
+        color="primary"
+        no-caps
+        @click="saveTableChanges"
+      />
+      <q-separator
+        vertical
+        inset
+      />
       <q-input
         dense
         debounce="300"
         v-model="filter"
         placeholder="Search"
+        class="q-mx-md"
       >
         <template v-slot:append>
           <q-icon name="search" />
@@ -184,12 +207,10 @@ const pagination = ref({
 });
 
 const filter = ref('');
-const expPacks = computed(() =>{
-  if (props.tab === 'all') return []
-  else return expansions.find((exp) => exp.code === props.tab).packs
-
-}
-);
+const expPacks = computed(() => {
+  if (props.tab === 'all') return [];
+  else return expansions.find((exp) => exp.code === props.tab).packs;
+});
 
 /* table actions */
 function increaseCardCount(row) {
@@ -208,6 +229,10 @@ function updateCardCount(cardInfo, quantity) {
     cardId: cardInfo.id,
     quantity,
   });
+}
+
+function saveTableChanges() {
+  cardsStore.saveUserCardUpdates();
 }
 </script>
 <style scoped>
