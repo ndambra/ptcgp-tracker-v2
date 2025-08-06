@@ -1,7 +1,6 @@
 <template>
   <q-layout view="lhh LpR lff">
-    <q-header
-      :elevated="useLightOrDark(true,false)">
+    <q-header bordered>
       <q-toolbar>
         <q-btn
           flat
@@ -10,18 +9,22 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-        />
+        >
+          <q-tooltip :delay="1000">Open Navigation</q-tooltip>
+      </q-btn>
 
         <q-toolbar-title>
           <q-btn
             flat
             class="absolute-center"
-            size="21px"
+            size="20px"
             label="PTCGP Tracker"
             icon="catching_pokemon"
             no-caps
             to="/"
-          />
+          >
+          <q-tooltip :delay="1000">Go To Homepage</q-tooltip>
+        </q-btn>
         </q-toolbar-title>
         <q-btn
           v-if="$route.fullPath === '/deck-builder'"
@@ -76,7 +79,6 @@ import { computed, ref } from 'vue';
 import NavLink from 'src/components/nav/NavLink.vue';
 import { useDecksStore } from 'src/stores/decks-store';
 import { useAuthStore } from 'src/stores/auth-store';
-import { useLightOrDark } from 'src/use/useLightOrDark';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

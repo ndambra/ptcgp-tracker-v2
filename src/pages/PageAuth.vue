@@ -3,8 +3,10 @@
     <q-card class="auth-card">
       <q-tabs
         v-model="tab"
-        :class="[useLightOrDark('text-grey-8', 'text-grey-3')]"
         active-color="primary"
+        indicator-color="primary"
+        active-class="goldman-bold"
+        class="text-secondary bg-grey-4"
         no-caps
       >
         <q-tab
@@ -19,13 +21,14 @@
       <q-tab-panels
         v-model="tab"
         animated
+        class="bg-grey-4"
       >
         <q-tab-panel name="login">
-          <login-form />
+          <auth-form tab="Login"/>
         </q-tab-panel>
 
         <q-tab-panel name="register">
-          <register-form />
+          <auth-form tab="Register"/>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
@@ -34,9 +37,7 @@
 <script setup>
 /* imports */
 import { ref } from 'vue';
-import { useLightOrDark } from 'src/use/useLightOrDark';
-import LoginForm from 'src/components/auth/LoginForm.vue';
-import RegisterForm from 'src/components/auth/RegisterForm.vue';
+import AuthForm from 'src/components/auth/AuthForm.vue';
 
 const tab = ref('login');
 </script>

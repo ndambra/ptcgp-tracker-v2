@@ -1,8 +1,6 @@
 <template>
-  <q-page>
-    <div class="q-ma-md">
-      <div class="text-h6 text-center">Card Tracker</div>
-    </div>
+  <q-page class="q-my-lg">
+    <div class="text-h5 goldman-bold q-px-lg text-primary">Card Tracker</div>
     <expansion-tabs />
   </q-page>
 </template>

@@ -1,9 +1,34 @@
-// global spacing
+@font-face {
+  font-family: "Goldman-Regular";
+  src: url(./fonts/Goldman-Regular.ttf);
+}
+@font-face {
+  font-family: "Goldman-Bold";
+  src: url(./fonts/Goldman-Bold.ttf);
+}
+
+.goldman-regular {
+  font-family: "Goldman-Regular";
+}
+
+.goldman-bold {
+  font-family: "Goldman-Bold";
+}
+
+/* global */
+body {
+  font-family: "Goldman-Regular";
+}
 .letter-spacing-none {
   letter-spacing: 0;
 }
 
-//dark mode overrides
+.text-light {
+  color: $light !important;
+}
+
+
+/* dark mode overrides */
 .body--dark {
   .bg-primary {
     background-color: $primary-dark !important;
@@ -17,7 +42,16 @@
 }
 
 .body--light {
-  background-color: $light-bg;
+  background-color: $light;
+}
+
+.q-toolbar {
+  padding: 12px;
+  color: $light;
+}
+
+.q-header--bordered {
+  border-bottom: 1px solid $secondary;
 }
 
 // Drawer nav
@@ -66,4 +100,9 @@
 }
 .q-table__top {
   padding: 0 16px;
+}
+
+.q-table__card {
+  color: $secondary;
+  background-color: $grey-3;
 }

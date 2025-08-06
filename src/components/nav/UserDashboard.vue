@@ -1,7 +1,8 @@
 <template>
-  <div class="q-my-md">
-    <div class="text-h6 text-center">Dashboard</div>
-    <q-separator class="text-separator" />
+  <div class="q-my-md text-light">
+    <div class="text-h5 q-pl-sm q-mb-sm goldman-bold text-primary">
+      Welcome back!
+    </div>
     <!-- <q-btn
         @click="addDocs"
         label="add"
@@ -20,7 +21,6 @@
     </div>
     <div v-else>
       <cards-summary />
-      <q-separator spaced />
     </div>
   </div>
 </template>
@@ -39,3 +39,4 @@ const cardsStore = useCardsStore();
 //   cardsStore.addCards(expCards, expId);
 // };
 </script>
+<style lang="scss" scoped></style>

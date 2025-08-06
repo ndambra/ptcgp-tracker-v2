@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import { reactive } from 'vue';
 import { useCardsStore } from './cards-store';
+import { Notify } from 'quasar';
 
 export const useAuthStore = defineStore('auth', () => {
   /* state */
@@ -63,6 +64,10 @@ export const useAuthStore = defineStore('auth', () => {
       })
       .catch((error) => {
         console.log('login error', error.message);
+        Notify.create({
+          message: "Invalid email and/or password.",
+          color: 'negative'
+        })
       });
   }
 

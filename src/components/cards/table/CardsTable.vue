@@ -3,7 +3,7 @@
     :pagination="pagination"
     :columns="columns"
     :rows="tableRows"
-    table-header-class="bg-primary text-grey-3"
+    table-header-class="bg-secondary text-light"
     row-key="id"
     :loading="!cardsStore.cardsLoaded"
     :filter="filter"
@@ -11,10 +11,10 @@
     <template v-slot:top>
       <q-card
         flat
-        class="q-pa-none"
+        class="bg-grey-3"
       >
-        <q-card-section>
-          <div class="text-weight-bold">Card Count:</div>
+        <q-card-section class="q-py-none">
+          <div class="goldman-bold">Card Count:</div>
           <div>{{ getOwnCardsCount }}/{{ getTotalCardsCount }}</div>
         </q-card-section>
       </q-card>
@@ -22,8 +22,11 @@
         vertical
         inset
       />
-      <q-card flat>
-        <q-card-section class="flex justify-evenly">
+      <q-card
+        flat
+        class="bg-grey-3"
+      >
+        <q-card-section class="flex justify-evenly q-pb-sm">
           <div
             v-for="pack in expPacks"
             :key="pack"
@@ -42,7 +45,7 @@
       />
       <q-space />
       <q-btn
-        class="q-mx-md"
+        class="q-mx-md q-px-sm q-py-none"
         label="Save"
         color="primary"
         no-caps
@@ -53,6 +56,7 @@
         inset
       />
       <q-input
+        borderless
         dense
         debounce="300"
         v-model="filter"

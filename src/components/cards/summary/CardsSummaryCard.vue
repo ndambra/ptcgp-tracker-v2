@@ -1,7 +1,7 @@
 <template>
   <q-card
     bordered
-    class="col-auto q-ma-sm"
+    class="col-auto q-ma-sm bg-secondary"
     style="min-width: 120px"
     clickable
     @click="onCardClick"
@@ -13,7 +13,7 @@
       </div>
     </q-card-section>
 
-    <q-separator inset />
+    <q-separator inset color="grey-4"/>
 
     <q-card-section class="flex justify-evenly">
       <div
@@ -65,7 +65,7 @@ function onCardClick() {
   cursor: pointer;
 }
 .q-card:hover {
-  background-color: #eee;
+  opacity: 85%;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 </style>

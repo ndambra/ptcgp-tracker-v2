@@ -23,4 +23,5 @@ $warning: #f2c037;
 
 // custom variables
 $primary-dark : color.adjust($primary , $lightness : -12%);
-$light-bg : #eee;
+// $light-bg : color.adjust($primary , $lightness : 42%);
+$light: #d0cece;

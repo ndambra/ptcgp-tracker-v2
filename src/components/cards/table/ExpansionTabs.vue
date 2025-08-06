@@ -1,27 +1,38 @@
 <template>
   <div class="q-ma-md">
-    <div class="panel-container">
-      <q-tabs
-        v-model="tab"
-        :class="[useLightOrDark('bg-grey-5', 'bg-grey-8'),  useLightOrDark('text-grey-9', 'text-grey-3')]"
-        active-color="primary"
-        no-caps
-        dense
+    <q-tabs
+      v-model="tab"
+      :class="[
+        useLightOrDark('bg-secondary', 'bg-grey-8'),
+        useLightOrDark('text-light', 'text-grey-3'),
+      ]"
+      active-color="accent"
+      no-caps
+      dense
+    >
+      <q-tab
+        v-for="tab in tabs"
+        :key="tab.name"
+        v-bind="tab"
+      />
+    </q-tabs>
+    <q-tab-panels v-model="tab">
+      <q-tab-panel
+        v-for="tab in tabs"
+        :key="tab.name"
+        :name="tab.name"
+        class="q-pa-none"
       >
-        <q-tab v-for="tab in tabs" :key="tab.name" v-bind="tab" />
-      </q-tabs>
-      <q-tab-panels v-model="tab">
-        <q-tab-panel
-          v-for="tab in tabs"
-          :key="tab.name"
-          :name="tab.name"
-          class="q-pa-none"
-        >
-          <cards-table v-if="!isDatabase" :tab="tab.name" />
-          <cards-database-table v-else  :tab="tab.name"/>
-        </q-tab-panel>
-      </q-tab-panels>
-    </div>
+        <cards-table
+          v-if="!isDatabase"
+          :tab="tab.name"
+        />
+        <cards-database-table
+          v-else
+          :tab="tab.name"
+        />
+      </q-tab-panel>
+    </q-tab-panels>
   </div>
 </template>
 <script setup>
@@ -38,9 +49,9 @@ const settingsStore = useSettingsStore();
 defineProps({
   isDatabase: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
 /* Tabs */
 const tab = ref(settingsStore.settings.cardTableTab);

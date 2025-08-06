@@ -14,7 +14,7 @@
       />
     </q-item-section>
     <q-item-section
-      class="text-weight-bold"
+      class="goldman-bold"
       :class="useLightOrDark('text-grey-9', 'text-grey-5')"
     >
       <div class="q-mr-xs cursor-pointer">
@@ -33,7 +33,7 @@
           <q-input
             v-model="scope.value"
             @keyup.enter="scope.set"
-            input-class="text-weight-bold letter-spacing-none"
+            input-class="goldman-bold letter-spacing-none"
             dense
             autofocus
             v-select-all
@@ -114,7 +114,7 @@ function promptToDelete() {
     title: 'Delete Deck',
     message: `
         Would you like to delete this deck?
-        <div class="q-mt-md text-weight-bold">
+        <div class="q-mt-md goldman-bold">
           <span class="text-${useTypeColor(props.deck.energy[0])}">${props.deck.name}</span>: ${props.deck.energy}
         </div>
       `,
